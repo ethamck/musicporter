@@ -1,3 +1,4 @@
+#!/bin/sh -
 log() { echo "$@" >&2; }
 
 if test -f "$1"; then
