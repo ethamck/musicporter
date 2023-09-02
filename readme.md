@@ -58,7 +58,11 @@ Requires that your manifest is formatted regularly (with `format.sh`) to render 
 
 ## `from/`
 
-Import scripts. Takes from a local file or URL and converts it to a manifest file.
+Import scripts. Converts a URL or local file to manifest format.
+
+### `youtube.sh`
+
+Outputs manifest based on YouTube playlist ID or URL. One of the scripts with the least overhead.
 
 ### `deezer.sh`
 
