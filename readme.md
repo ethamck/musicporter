@@ -2,13 +2,26 @@
 
 The main source of data every script interacts with is a **manifest file**, which is just a newline-delimited text file of IDs or URLs that `yt-dlp` can download. Comments (single-line `#`s) are filtered out.
 
+```sh
+lYBUbBu4W08	# Never Gonna Give You Up	Rick Astley
+KzLlVKXKnyU	# Robot Rock	Daft Punk
+```
+
 Separate manifests can be used as playlists, but this is up to you. musicporter doesn't force any restrictions on the utility of the files.
 
-Most scripts require `yt-dlp` and `ffmpeg` along with POSIX utilites. External dependencies are minimized.
-
-Originally, musicporter only had `download.sh` (then named `porter.sh`) and was a large, bloated script I used to manually tag YouTube songs and move them to my phone. Since then it has been expanded into multiple simple and correct scripts as I need them.
+Almost every script requires `yt-dlp` and utilities from POSIX. `ffmpeg` and `mutagen` should be installed when downloading files locally. Other external dependencies are minimized.
 
 See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46efca428760d436b) as an example of how I use these scripts.
+
+**All scripts interact with streams rather than files.** This means you must pipe input into them rather than specifying files as arguments.
+
+```sh
+./download.sh < manifest.tsv
+```
+
+Doing this has the added benefit of allowing you to append to files without needing to con`cat`enate them to a temporary one.
+
+Originally, musicporter only had `download.sh` (then named `porter.sh`) and was a large, bloated script I used to manually tag YouTube songs and move them to my phone. Since then it has been expanded into multiple simple and correct scripts as I need them.
 
 ## `play.sh`
 
@@ -18,7 +31,7 @@ Interactively, you can use a one-line loop to play from your terminal in a shuff
 
 ```sh
 while true; do
-	./play.sh manifest.tsv | mpv --really-quiet -
+	./play.sh < manifest.tsv | mpv --really-quiet -
 done
 ```
 
@@ -46,9 +59,9 @@ After running this command, you may want to run `sort` on your manifest file to 
 
 Format a messy manifest file from scratch with track and artist names as comments.
 
-Meant to be used with file redirection `format.sh > manifest.new`. (Don't overwrite the file that you're outputting stout to!)
+Meant to be used with file redirection `format.sh > manifest.new`. (Don't overwrite the file that you're outputting stdout to!)
 
-Will take a long time on bigger files as it has to query metadata about every song. You don't need to use this if you use `add.sh` properly.
+Will take a long time on bigger files as it has to query metadata about every song. You don't need to use this if you use `add.sh` properly. May not function flawlessly on files that `yt-dlp` doesn't recognize as "songs".
 
 ## `view.sh`
 
@@ -60,9 +73,15 @@ Requires that your manifest is formatted regularly (with `format.sh`) to render 
 
 Import scripts. Converts a URL or local file to manifest format.
 
+These scripts require `manifest.tsv` as an *output* rather than input:
+
+```sh
+./youtube.sh OLAK5uy_kR-piDyx0Z-biqKgyeuCiepEJwGz5Oqyw >> manifest.tsv
+```
+
 ### `youtube.sh`
 
-Outputs manifest based on YouTube playlist ID or URL. One of the scripts with the least overhead.
+Outputs manifest based on input YouTube playlist ID or URL. One of the scripts with the least overhead.
 
 ### `deezer.sh`
 

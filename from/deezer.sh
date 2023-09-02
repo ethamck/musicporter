@@ -1,9 +1,17 @@
 #!/bin/sh -
 log() { echo "$@" >&2; }
 
-if test -f "$1"; then
-	DATA="$(cat $1)"
+if test ! -t 0; then
+	DATA="$(tee)"
 elif test "$1" != ""; then
+	if test -f "$1"; then
+		log This argument exists as a file.
+		log If you want to use it as a file, redirect it with
+		log
+		log '\t'"deezer.sh < $1"
+		log
+	fi
+	
 	log [2mdownloading from api.deezer.com/user/$1...[m
 	DATA="$(curl -s https://api.deezer.com/user/$1/tracks?limit=2147483647)"
 
@@ -23,7 +31,7 @@ else
 	exit 1
 fi
 
-echo $DATA | jq -Mrc '.data[] | .artist.name + " - " + .title' | tr ' ' '+' | while read line; do
+echo "$DATA" | jq -Mrc '.data[] | .artist.name + " - " + .title' | tr ' ' '+' | while read line; do
 	log [2mquerying[m $line
 
 	SONG="$(yt-dlp -iqS +size --max-downloads 1 "https://music.youtube.com/search?q=$line#songs" -O pre_process:"%(id)s"'\t'"%(track)s"'\t'"%(artist)s")"
