@@ -11,7 +11,7 @@ Separate manifests can be used as playlists, but this is up to you. musicporter 
 
 Almost every script requires `yt-dlp` and utilities from POSIX. `ffmpeg` and `mutagen` should be installed when downloading files locally. Other external dependencies are minimized.
 
-See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46efca428760d436b) as an example of how I use these scripts.
+See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46efca428760d436b) as an example of how one could use these scripts.
 
 **All scripts interact with streams rather than files.** This means you must pipe input into them rather than specifying files as arguments.
 
@@ -82,6 +82,8 @@ These scripts require `manifest.tsv` as an *output* rather than input:
 ### `youtube.sh`
 
 Outputs manifest based on input YouTube playlist ID or URL. One of the scripts with the least overhead.
+
+This is also the easiest way to write albums to a manifest file, as albums are regular YouTube playlists. [Beatbump](https://github.com/snuffyDev/Beatbump) or [Hyperpipe](https://codeberg.org/Hyperpipe/Hyperpipe) can be used to obtain album IDs without touching YouTube itself. Other regular frontends don't often find music easily.
 
 ### `deezer.sh`
 
