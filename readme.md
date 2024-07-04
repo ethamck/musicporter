@@ -1,5 +1,3 @@
-# musicporter
-
 The main source of data every script interacts with is a **manifest file**, which is just a newline-delimited text file of IDs or URLs that `yt-dlp` can download. Comments (single-line `#`s) are filtered out.
 
 ```sh
@@ -9,9 +7,9 @@ KzLlVKXKnyU	# Robot Rock	Daft Punk
 
 Separate manifests can be used as playlists, but this is up to you. musicporter doesn't force any restrictions on the utility of the files.
 
-Almost every script requires `yt-dlp` and utilities from POSIX. `ffmpeg` and `mutagen` should be installed when downloading files locally. Other external dependencies are minimized.
+Almost every script requires `yt-dlp` and utilities from POSIX. `ffmpeg` and `mutagen` should be installed if downloading files locally. Other external dependencies are minimized.
 
-See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46efca428760d436b) as an example of how one could use these scripts.
+See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46efca428760d436b) as an example of the manifest format.
 
 **All scripts interact with streams rather than files.** This means you must pipe input into them rather than specifying files as arguments.
 
@@ -21,7 +19,9 @@ See [my `manifest.tsv` file](https://gist.github.com/ethamck/701a8af65a8a83a46ef
 
 Doing this has the added benefit of allowing you to append to files without needing to con`cat`enate them to a temporary one.
 
-Originally, musicporter only had `download.sh` (then named `porter.sh`) and was a large, bloated script I used to manually tag YouTube songs and move them to my phone. Since then it has been expanded into multiple simple and correct scripts as I need them.
+Originally, musicporter only had `download.sh` (then named `porter.sh`) and was a large, bloated script I used to manually tag YouTube songs and move them to my phone. Since then it has been expanded into multiple simple and semantic scripts as I need them.
+
+You can in many cases use `watch` and `tail` together to monitor any script's progress. `tail manifest.tsv` while another process is `format.sh`ing displays a live feed of every line being added to your manifest.
 
 ## `play.sh`
 
@@ -37,7 +37,7 @@ done
 
 ## `download.sh`
 
-Downloads each song from manifest, tagging with song metadata and album art (from thumbnail). Useful for having a local copy of your library, especially on mobile devices.
+Downloads each song from manifest, tagging with song metadata and album art (from thumbnail).
 
 The file format will default to the best quality, which is usually `.opus`.
 
@@ -46,7 +46,7 @@ The file format will default to the best quality, which is usually `.opus`.
 Searches YouTube Music for a song and returns its formatted manifest line.
 
 ```
-~ ./add.sh never gonna give you up
+./add.sh never gonna give you up
 searching never+gonna+give+you+up
 lYBUbBu4W08	# Never Gonna Give You Up	Rick Astley
 ```
@@ -83,7 +83,7 @@ These scripts require `manifest.tsv` as an *output* rather than input:
 
 Outputs manifest based on input YouTube playlist ID or URL. One of the scripts with the least overhead.
 
-This is also the easiest way to write albums to a manifest file, as albums are regular YouTube playlists. [Beatbump](https://github.com/snuffyDev/Beatbump) or [Hyperpipe](https://codeberg.org/Hyperpipe/Hyperpipe) can be used to obtain album IDs without touching YouTube itself. Other regular frontends don't often find music easily.
+This is also the easiest way to write albums to a manifest file, as albums are regular YouTube playlists. [Beatbump](https://github.com/snuffyDev/Beatbump) or [Hyperpipe](https://codeberg.org/Hyperpipe/Hyperpipe) can be used to obtain album IDs without touching YouTube itself. Other regular frontends (Invidious, Piped) don't often find music easily.
 
 ### `deezer.sh`
 
